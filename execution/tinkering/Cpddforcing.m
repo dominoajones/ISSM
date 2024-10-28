@@ -19,7 +19,7 @@ md=loadmodel('invert.mat')
 	md.smb.pddfac_ice = 8.3*ones(md.mesh.numberofvertices,1);
 
     disp('   ACC');
-ncdataacc='./trunk/datasets/Box1840thr2012/accbox.nc';
+ncdataacc='./execution/trunk/datasets/Box1840thr2012/accbox.nc';
 finfo = ncinfo(ncdataacc);
 xacc= ncread(ncdataacc,'x');
 yacc= ncread(ncdataacc,'y');
@@ -40,7 +40,7 @@ for i = 133:144 % 12 months
 end
 
     disp('   DEM');
-ncdatadem='./trunk/datasets/Box1840thr2012/dembox.nc';
+ncdatadem='./execution/trunk/datasets/Box1840thr2012/dembox.nc';
 % finfo = ncinfo(ncdatadem);
 xdem= ncread(ncdatadem,'x');
 ydem= ncread(ncdatadem,'y');
@@ -50,7 +50,7 @@ md.smb.s0p = (max(box_dem,0));
 md.smb.s0t = (max(box_dem,0));
 
     disp('   Temp');
-ncdatatemp='./trunk/datasets/Box1840thr2012/tempbox.nc';
+ncdatatemp='./execution/trunk/datasets/Box1840thr2012/tempbox.nc';
 %finfo = ncinfo(ncdatatemp);
 xtemp= ncread(ncdatatemp,'x');
 ytemp= ncread(ncdatatemp,'y');
@@ -71,7 +71,7 @@ for i = 133:144 % 12 months
 end
 
 
-ncbadg='./trunk/datasets/paleoran/briner2020recons.nc';
+ncbadg='./execution/trunk/datasets/paleoran/briner2020recons.nc';
 finfo = ncinfo(ncbadg);
 
 	pre1 = ncread(ncbadg,'P_moderate');

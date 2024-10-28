@@ -23,11 +23,11 @@ md.miscellaneous.notes='Setting up initialization';
 md.mesh.epsg=3413;
 
 % Creating a mesh
-md=triangle(model,'.\KNS-setup\domain\domain.exp',1000000);
+md=triangle(model,'./execution/domain/domain.exp',1000000);
 
 disp(' Refining Mesh');
-ncdatavx = '.\trunk\datasets\Velocity\Clipped\vx_vel-CL.nc';
-ncdatavy = '.\trunk\datasets\Velocity\Clipped\vy_vel-CL.nc' ;
+ncdatavx = './execution/trunk/datasets/Velocity/Clipped/vx_vel-CL.nc';
+ncdatavy = './execution/trunk/datasets/Velocity/Clipped/vy_vel-CL.nc' ;
 
 velx= ncread(ncdatavx,'Band1');
 xx= ncread(ncdatavx,'x');
@@ -40,7 +40,7 @@ yy= ncread(ncdatavx,'y');
 vx	= InterpFromGridToMesh(xx,yx,velx',md.mesh.x,md.mesh.y,0);
 vy	= InterpFromGridToMesh(xy,yy,vely',md.mesh.x,md.mesh.y,0);
 vel	= sqrt(vx.^2+vy.^2);
-in=ContourToNodes(md.mesh.x,md.mesh.y,'.\KNS-setup\domain\no-ice-mask.exp',1);
+in=ContourToNodes(md.mesh.x,md.mesh.y,'./execution/KNS-setup/domain/no-ice-mask.exp',1);
 vx(find(in))=0;
 vy(find(in))=0;
 vel(find(in))=0;
@@ -54,16 +54,16 @@ disp('Refine mesh at TW margin');
 md.private.bamg=struct();
 
 h=NaN*ones(md.mesh.numberofvertices,1);
-in=ContourToNodes(md.mesh.x,md.mesh.y,'.\KNS-setup\domain\refinement.exp',1);
+in=ContourToNodes(md.mesh.x,md.mesh.y,'./execution/domain/refinement.exp',1);
 h(find(in))=500; % may be too fine
-% in=ContourToNodes(md.mesh.x,md.mesh.y,'.\KNS-setup\domain\no-ice-mask.exp',1);
+% in=ContourToNodes(md.mesh.x,md.mesh.y,'./execution/domain/no-ice-mask.exp',1);
 % h(find(in))=2500;
 % % plotmodel(md,'data',in,'edgecolor','w');
 
 vx	= InterpFromGridToMesh(xx,yx,velx',md.mesh.x,md.mesh.y,0);
 vy	= InterpFromGridToMesh(xy,yy,vely',md.mesh.x,md.mesh.y,0);
 vel	= sqrt(vx.^2+vy.^2);
-in=ContourToNodes(md.mesh.x,md.mesh.y,'.\KNS-setup\domain\no-ice-mask.exp',1);
+in=ContourToNodes(md.mesh.x,md.mesh.y,'./execution/domain/no-ice-mask.exp',1);
 vx(find(in))=0;
 vy(find(in))=0;
 vel(find(in))=0;
@@ -73,7 +73,7 @@ md=bamg(md,'hmin',500,'hmax',50000,'field',vel,'err',5,'hVertices',h);
 plotmodel(md,'data','mesh');
 
 disp('Interpolate geometry');
-nctopg='.\trunk\datasets\Bedmachine\Clipped\bed-bedmachine-CL.nc';
+nctopg='./execution/trunk/datasets/Bedmachine/Clipped/bed-bedmachine-CL.nc';
 x2= ncread(nctopg,'x');
 y2= ncread(nctopg,'y');
 topg  = ncread(nctopg,'bed')';
@@ -83,13 +83,13 @@ md.geometry.bed=md.geometry.base;
 %   Sanity check:
 %plotmodel(md,'data',md.geometry.base)
 
-ncsurf='.\trunk\datasets\Bedmachine\Clipped\surface-bedmachine-CL.nc';
+ncsurf='./execution/trunk/datasets/Bedmachine/Clipped/surface-bedmachine-CL.nc';
 x3= ncread(ncsurf,'x');
 y3= ncread(ncsurf,'y');
 surf  = ncread(ncsurf, 'surface')';
 disp('   Surface elevation');
 md.geometry.surface=InterpFromGridToMesh(x3,y3,surf,md.mesh.x,md.mesh.y,0);
-in=ContourToNodes(md.mesh.x,md.mesh.y,'.\KNS-setup\domain\no-ice-mask.exp',1);
+in=ContourToNodes(md.mesh.x,md.mesh.y,'./execution/domain/no-ice-mask.exp',1);
 md.geometry.surface(find(in))=md.geometry.base(find(in));
 
 md.geometry.thickness=md.geometry.surface-md.geometry.base;
@@ -108,9 +108,9 @@ md.inversion.surface_obs=md.geometry.surface;
 
 disp('Interpolate other parameters');
 disp('    Velocity');
-ncdatavv = '.\trunk/datasets/Velocity/Clipped/cal_vel-CL.nc';
+ncdatavv = './execution/trunk/datasets/Velocity/Clipped/cal_vel-CL.nc';
 % finfo = ncinfo(ncdatavv)
-% novel=ContourToNodes(md.mesh.x,md.mesh.y,'.\KNS-setup\domain\no-velocity-values.exp',1);
+% novel=ContourToNodes(md.mesh.x,md.mesh.y,'./execution/domain/no-velocity-values.exp',1);
 velv= ncread(ncdatavv,'Band1');
 xv= ncread(ncdatavv,'x');
 yv= ncread(ncdatavv,'y');
@@ -132,7 +132,7 @@ md.initialization.vy = md.inversion.vy_obs;
 md.initialization.vz=zeros(md.mesh.numberofvertices,1);
 
 disp('   Temperature');
-ncdatatemp='C:/Users/domjon/Desktop/KNS-ISSM/trunk/datasets/RACMO23p2/Clipped/t2m_clipped.nc';
+ncdatatemp=./execution/trunk/datasets/RACMO23p2/Clipped/t2m_clipped.nc;
 % finfo = ncinfo(ncdatatemp);
 xtemp= ncread(ncdatatemp,'x');
 ytemp= ncread(ncdatatemp,'y');
@@ -156,12 +156,12 @@ md.materials.rheology_law='None';
 md=setflowequation(md,'SSA','all');
 
 disp('Set mask');
-in=ContourToNodes(md.mesh.x,md.mesh.y,'.\KNS-setup\domain\no-ice-mask.exp',1);
+in=ContourToNodes(md.mesh.x,md.mesh.y,'./execution/domain/no-ice-mask.exp',1);
 md=setmask(md,'','');
 md.mask.ice_levelset(find(in))=1;
 
 disp('Set boundary conditions');
-% md=SetMarineIceSheetBC(md,'.\KNS-setup\domain\front.exp'); 
+% md=SetMarineIceSheetBC(md,'./execution/domain/front.exp'); 
 md=SetIceSheetBC(md);
 
 pos = find(md.mesh.vertexonboundary);
@@ -170,7 +170,7 @@ md.masstransport.spcthickness(pos) = md.geometry.thickness(pos);
 %Make mass transport more stable
 md.masstransport.stabilization = 1; %5: SUPG, 2: SU, 1: art diff
 
-in=ContourToNodes(md.mesh.x,md.mesh.y,'.\KNS-setup\domain\adjustBC.exp',1);
+in=ContourToNodes(md.mesh.x,md.mesh.y,'./execution/domain/adjustBC.exp',1);
 pos=find(in);
 md.stressbalance.spcvx(pos)=NaN;
 md.stressbalance.spcvy(pos)=NaN;

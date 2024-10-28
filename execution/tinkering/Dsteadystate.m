@@ -1,7 +1,7 @@
 md=loadmodel('pddforce.mat');
 %%
         % Basal friction
-in = ContourToNodes(md.mesh.x, md.mesh.y, '.\KNS-setup\domain\refinement.exp', 1) & md.friction.coefficient>1.5;
+in = ContourToNodes(md.mesh.x, md.mesh.y, './execution/domain/refinement.exp', 1) & md.friction.coefficient>1.5;
 indepbase = md.geometry.base(find(in));
 depfriction = md.friction.coefficient(find(in));
 
@@ -20,7 +20,7 @@ fittedValues = polyval(p, indepbase);
 in = md.mask.ice_levelset>0;
 md.friction.coefficient(find(in))= p(1)*md.geometry.base(find(in)) + p(2);
 
-in=ContourToNodes(md.mesh.x, md.mesh.y, '.\KNS-setup\domain\smoothing.exp', 1) ;
+in=ContourToNodes(md.mesh.x, md.mesh.y, './execution/domain/smoothing.exp', 1) ;
 % md.friction.coefficient(find(in))=smoothdata(md.friction.coefficient(find(in)),'SmoothingFactor',0.2);
 % md.friction.coefficient(find(in))=smoothdata(md.friction.coefficient(find(in)),'rlowess',4);
 md.friction.coefficient(find(in))=smoothdata(md.friction.coefficient(find(in)),"movmedian",10);
@@ -114,7 +114,7 @@ t=[];
 %     md.smb.rlaps=0;
 
 % md.smb=SMBforcing();
-% ncdatasmb = '.\trunk\datasets\RACMO23p2\Clipped\SMB_clipped_3413.nc';
+% ncdatasmb = './execution/trunk/datasets/RACMO23p2/Clipped/SMB_clipped_3413.nc';
 % % finfo = ncinfo(ncdatasmb)
 % xs = ncread(ncdatasmb, 'x');
 % ys = ncread(ncdatasmb, 'y');
@@ -247,9 +247,9 @@ z = [-1000:10:1000];demcmap(z)
 	    'caxis#all',([1.5,6000]),'log#all',10)
 
        hold on
-gt = shaperead('./trunk/KNS/paleo-positions/paleo-positions.shp');
+gt = shaperead('./execution/trunk/KNS/paleo-positions/paleo-positions.shp');
 mapshow(gt);
-S = shaperead('./trunk/KNS/fjord.shp');
+S = shaperead('./execution/trunk/KNS/fjord.shp');
 mapshow(S, 'LineWidth', 1.5, 'EdgeColor', 'none', 'FaceColor', [0.5, 0.5, 0.5], 'FaceAlpha', 0.5);
 
 %%
@@ -261,7 +261,7 @@ plotmodel(md,'data','transient_movie','caxis#all',([1.5,4000]))
     md.results = rmfield(md.results,'StressbalanceSolution');
     % remove relaxation results...
     md.results = rmfield(md.results,'TransientSolution3');
-    save ./tinkering/Shared/steadystate.mat md
+    save ./execution/tinkering/Shared/steadystate.mat md
 %%
     plotmodel(md,'data',md.results.TransientSolution(18).Vel,'title','modelled velocities', ...
         'data',md.initialization.vel,'title','observed velocities',...
@@ -281,9 +281,9 @@ plotmodel(md,'data','transient_movie','caxis#all',([1.5,4000]))
         %plotmodel(md,'data','transient_movie','transient_movie_field','Vx','transient_movie_output','600-900_part2_vx.gif')
 
 %            hold on
-% gt = shaperead('./trunk/KNS/paleo-positions/paleo-positions.shp');
+% gt = shaperead('./execution/trunk/KNS/paleo-positions/paleo-positions.shp');
 % mapshow(gt);      
-% S = shaperead('./trunk/KNS/fjord.shp');
+% S = shaperead('./execution/trunk/KNS/fjord.shp');
 % mapshow(S, 'LineWidth', 1.5, 'EdgeColor', 'none', 'FaceColor', [0.5, 0.5, 0.5], 'FaceAlpha', 0.5);
 
 %%

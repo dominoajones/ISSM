@@ -68,7 +68,7 @@ disp('Inversion parameters);')
 
     %changing cost function coefficients where mesh is refined
 h=NaN*ones(md.mesh.numberofvertices,1);
-in=ContourToNodes(md.mesh.x,md.mesh.y,'.\KNS-setup\domain\refinement.exp',1);
+in=ContourToNodes(md.mesh.x,md.mesh.y,'./execution/domain/refinement.exp',1);
 h(find(in))=1;
 pos=find(h==1);
 md.inversion.cost_functions_coefficients(pos,1)=400;
