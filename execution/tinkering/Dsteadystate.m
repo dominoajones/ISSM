@@ -26,6 +26,7 @@ in=ContourToNodes(md.mesh.x, md.mesh.y, './execution/domain/smoothing.exp', 1) ;
 md.friction.coefficient(find(in))=smoothdata(md.friction.coefficient(find(in)),"movmedian",10);
 plotmodel(md,'data',md.friction.coefficient,'title','Friction Coefficient')
     %%
+
     md.smb = SMBd18opdd();
     x = [0+1/12:1/12:100+1/12];
 	a = x(1:1:end-1);
@@ -181,6 +182,7 @@ md.masstransport.stabilization = 1;
 	md.toolkits=toolkits;
     md.verbose=verbose('all');
     md.cluster=barkla();
+
 
     %%
 
