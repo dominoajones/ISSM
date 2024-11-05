@@ -1,4 +1,5 @@
-# Ignore everything in this directory
-*
-# Except this .gitignore file
-!.gitignore
+# Things to ignore in this directory
+trunk
+runs
+figs
+domain
