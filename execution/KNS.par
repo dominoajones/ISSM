@@ -3,7 +3,7 @@ md.miscellaneous.name='KNS';
 md.mesh.epsg=3413;
 
 disp('Interpolate geometry');
-nctopg='.\trunk\datasets\Bedmachine\Clipped\bed-bedmachine-CL.nc';
+nctopg='/projects/domino/ISSM/execution/trunk/datasets/Bedmachine/Clipped/bed-bedmachine-CL.nc';
 x2= ncread(nctopg,'x');
 y2= ncread(nctopg,'y');
 topg  = ncread(nctopg,'bed')';
@@ -15,12 +15,12 @@ md.geometry.bed=md.geometry.base;
 %plotmodel(md,'data',md.geometry.base)
 
 disp('   Surface elevation');
-ncsurf='.\trunk\datasets\Bedmachine\Clipped\surface-bedmachine-CL.nc';
+ncsurf='/projects/domino/ISSM/execution/trunk/datasets/Bedmachine/Clipped/surface-bedmachine-CL.nc';
 x3= ncread(ncsurf,'x');
 y3= ncread(ncsurf,'y');
 surf  = ncread(ncsurf, 'surface')';
 md.geometry.surface=InterpFromGridToMesh(x3,y3,surf,md.mesh.x,md.mesh.y,0);
-in=ContourToNodes(md.mesh.x,md.mesh.y,'.\KNS-setup\domain\no-ice-mask.exp',1);
+in=ContourToNodes(md.mesh.x,md.mesh.y,'/projects/domino/ISSM/execution/domain/domain/no-ice-mask.exp',1);
 md.geometry.surface(find(in))=md.geometry.base(find(in));
 
 disp('   Thickness');
@@ -35,8 +35,8 @@ md.inversion.thickness_obs=md.geometry.thickness;
 md.inversion.surface_obs=md.geometry.surface;
 
 disp('   Interpolating velocities');
-ncdatavx = '.\trunk\datasets\Velocity\Clipped\vx_vel-CL.nc';
-ncdatavy = '.\trunk\datasets\Velocity\Clipped\vy_vel-CL.nc' ;
+ncdatavx = '/projects/domino/ISSM/execution/trunk/datasets/Velocity/Clipped/vx_vel-CL.nc';
+ncdatavy = '/projects/domino/ISSM/execution/trunk/datasets/Velocity/Clipped/vy_vel-CL.nc' ;
 
 velx= ncread(ncdatavx,'Band1');
 xx= ncread(ncdatavx,'x');
@@ -46,7 +46,7 @@ vely= ncread(ncdatavy,'Band1');
 xy= ncread(ncdatavx,'x');
 yy= ncread(ncdatavx,'y');
 
-ncdatavv = '.\trunk/datasets/Velocity/Clipped/cal_vel-CL.nc';
+ncdatavv = '/projects/domino/ISSM/execution/trunk/datasets/Velocity/Clipped/cal_vel-CL.nc';
 % finfo = ncinfo(ncdatavv)
 velv= ncread(ncdatavv,'Band1');
 xv= ncread(ncdatavv,'x');
@@ -116,13 +116,13 @@ md.masstransport.spcthickness(pos) = md.geometry.thickness(pos);
  disp('		-- Make mass transport more stable');
 md.masstransport.stabilization = 1; %5: SUPG, 2: SU, 1: art diff
 disp('		--NaN SPCs at outflow boundary');
-in=ContourToNodes(md.mesh.x,md.mesh.y,'.\KNS-setup\domain\adjustBC.exp',1);
+in=ContourToNodes(md.mesh.x,md.mesh.y,'/projects/domino/ISSM/execution/domain/domain/adjustBC.exp',1);
 pos=find(in);
 md.stressbalance.spcvx(pos)=NaN;
 md.stressbalance.spcvy(pos)=NaN;
 md.stressbalance.spcvz(pos)=NaN;
 disp('		--Adjust mask ice levelset');
-in=ContourToNodes(md.mesh.x,md.mesh.y,'.\KNS-setup\domain\no-ice-mask.exp',1);
+in=ContourToNodes(md.mesh.x,md.mesh.y,'/projects/domino/ISSM/execution/domain/domain/no-ice-mask.exp',1);
 md.mask.ice_levelset(find(in))=1;
 
 disp('PDD model for SMB -- initialization');
@@ -145,7 +145,7 @@ disp('PDD model for SMB -- initialization');
 	md.smb.pddfac_ice = 8.3*ones(md.mesh.numberofvertices,1);
 
     disp('   ACC');
-ncdataacc='./trunk/datasets/Box1840thr2012/accbox.nc';
+ncdataacc='/projects/domino/ISSM/execution/trunk/datasets/Box1840thr2012/accbox.nc';
 finfo = ncinfo(ncdataacc);
 xacc= ncread(ncdataacc,'x');
 yacc= ncread(ncdataacc,'y');
@@ -166,7 +166,7 @@ for i = 133:144 % 12 months
 end
 
     disp('   DEM');
-ncdatadem='./trunk/datasets/Box1840thr2012/dembox.nc';
+ncdatadem='/projects/domino/ISSM/execution/trunk/datasets/Box1840thr2012/dembox.nc';
 % finfo = ncinfo(ncdatadem);
 xdem= ncread(ncdatadem,'x');
 ydem= ncread(ncdatadem,'y');
@@ -176,7 +176,7 @@ md.smb.s0p = (max(box_dem,0));
 md.smb.s0t = (max(box_dem,0));
 
     disp('   Temp');
-ncdatatemp='./trunk/datasets/Box1840thr2012/tempbox.nc';
+ncdatatemp='/projects/domino/ISSM/execution/trunk/datasets/Box1840thr2012/tempbox.nc';
 %finfo = ncinfo(ncdatatemp);
 xtemp= ncread(ncdatatemp,'x');
 ytemp= ncread(ncdatatemp,'y');
@@ -197,7 +197,7 @@ for i = 133:144 % 12 months
 end
 
 
-ncbadg='./trunk/datasets/paleoran/briner2020recons.nc';
+ncbadg='/projects/domino/ISSM/execution/trunk/datasets/paleoran/briner2020recons.nc';
 finfo = ncinfo(ncbadg);
 
 	pre1 = ncread(ncbadg,'P_moderate');
